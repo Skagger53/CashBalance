@@ -13,7 +13,6 @@ else:
         menu_one_input = False
         record_total = None
         starting_date = False
-        ending_date = False
         while menu_one_input == False:
             header = mf.display_entered_info(date_range, starting_amount, record_total, cash_on_hand)
             if header != []:
@@ -43,12 +42,12 @@ else:
                 case 2:
                     if record_total != None:
                         if mf.input_y_n( f"You have already loaded an RFMS Withdrawal Record (which totaled ${'{:.2f}'.format(record_total)}. Do you want to select a new record and overwrite this one?\n") == True:
-                            menu_one_input, record_total, path = False, pim.get_pdf()
+                            menu_one_input = False
+                            record_total, path = pim.get_pdf()
                         else: menu_one_input = False
                     else:
                         menu_one_input = False
                         record_total, path = pim.get_pdf()
-                        print(path)
 
                 case 3:
                     if starting_amount != None:
@@ -91,7 +90,7 @@ else:
                     if cash_on_hand == None: missing_data.append("cash on hand")
                     if starting_amount == None: missing_data.append("starting amount")
                     if record_total == None: missing_data.append("RFMS Withdrawal Record")
-                    if comments == None and starting_amount - record_total != cash_on_hand: missing_data.append("comments (REQUIRED due to cash on hand not equalling predicted cash amount)")
+                    if comments == None and round(starting_amount - record_total, 2) != cash_on_hand: missing_data.append("comments (REQUIRED due to cash on hand not equalling predicted cash amount)") # Rounding to avoid floating point errors
                     if len(missing_data) > 0:
                         input(f"You must provide the following data before you can export to PDF: {', '.join(missing_data)}\n(Press enter.)\n")
                         menu_one_input = False

@@ -30,7 +30,7 @@ else:
         total_record_cash = 0
         for page in full_pdf_text:
             for i, line in enumerate(page):
-                if line == "RESIDNT ADVANCE " and page[i + 3] == "CASH": total_record_cash += float(page[i - 6])
+                if line == "RESIDNT ADVANCE " and page[i + 3] == "CASH": total_record_cash += float(page[i - 6].replace(",", ""))
 
         return total_record_cash
 

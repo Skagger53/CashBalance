@@ -8,7 +8,7 @@ else:
         pdf_export.add_page()
         pdf_export.set_font("helvetica", "I", 18)
 
-        pdf_export.image("logo.png", 2.375, .75, 3.5)
+        pdf_export.image("logo.png", 2.5, .75, 3.5)
         pdf_export.set_y(2.6)
         pdf_export.multi_cell(w=0, h=.3, txt="The Estates at Chateau:\nCash-on-hand reconciliation\nfor RFMS Resident Trust Funds", align="C")
 
@@ -23,7 +23,9 @@ else:
         pdf_export.multi_cell(w=0, h=.2, txt=f"Starting balance: ${'{:.2f}'.format(starting_amount)}\nRFMS cash withdrawals recorded: ${'{:.2f}'.format(record_total)}\nCash predicted to be on hand: ${'{:.2f}'.format(starting_amount - record_total)}\nActual cash on hand: ${'{:.2f}'.format(cash_on_hand)}", align="L")
         pdf_export.set_font("helvetica", "BU", 11)
         pdf_export.set_x(1)
-        pdf_export.cell(w = 0, h = .2, txt = f"Difference: ${'{:.2f}'.format(starting_amount - record_total - cash_on_hand)}")
+        difference = round(cash_on_hand - (starting_amount - record_total), 2) # Rounding to avoid floating point errors
+        if difference == 0: difference = 0 # This looks unneeded, but without this line, a balanced reconciliation may display a difference of "$-0.00" due to a floating point error.
+        pdf_export.cell(w = 0, h = .2, txt = f"Difference: ${'{:.2f}'.format(difference)}")
 
         pdf_export.set_font("helvetica", "", 11)
 
@@ -71,6 +73,7 @@ else:
             pdf_export.set_xy(4.65, 7.45)
             pdf_export.cell(w=0, h=.2, txt="Business Office Manager signature")
 
+            #path = path.replace('/', '\\')
             pdf_export.output(f"{path}EAC_RFMS_Reconciliation_{date_range[0].strftime('%m-%d-%Y')}_to_{date_range[1].strftime('%m-%d-%Y')}.pdf")
 
     #create_pdf((datetime.datetime(2020, 1, 1), datetime.datetime(2020, 1, 6)), 2500.50, 2500, 99.5, "asdfLorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque dictum metus ut consectetur convallis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum laoreet molestie lorem, nec sodales metus cursus finibus. Integer volutpat magna at euismod vestibulum. Aenean tortor sapien, porttitor vel risus eget, dictum vehicula massa. Nunc ultricies volutpat nunc, et iaculis nulla tristique vel. Fusce fringilla mauris tristique, tristique libero vitae, mollis dui. Suspendisse commodo aliquet aliquam. Etiam ornare faucibus mi, nec egestas odio lacinia non. Mauris orci odio, faucibus eu auctor ut, luctus ut tortor. Morbi at dui in neque imperdiet sollicitudin.Comments: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque dictum metus ut consectetur convallis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum laoreet molestie lorem, nec sod.", "F:/Documents/Google Drive/Personal/Coding/Python/2022.06.12_CashBalance/")
