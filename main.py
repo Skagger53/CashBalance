@@ -4,6 +4,7 @@ if __name__ != "__main__":
     input("This is the main module. Do not call this module.\n\nTerminating.\n")
     sys.exit()
 
+import os
 import misc_functions as mf
 import pdf_import as pim
 import entering_data as ed
@@ -17,10 +18,13 @@ def menu_one():
     menu_one_input = False
     record_total = None
     starting_date = False
+
     while menu_one_input == False:
+        os.system("cls")
         header = mf.display_entered_info(date_range, starting_amount, record_total, cash_on_hand)
         if header != []:
             for item in header: print(item)
+
         print("1. Enter date range\n2. Select RFMS Withdrawal Record\n3. Enter starting amount\n4. Enter cash on hand\n5. Enter comments\n6. View comments\n7. Export PDF\n8. Quit")
         menu_one_input = mf.validate_input_tuple(input(), range(1, 9))
 

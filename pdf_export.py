@@ -5,7 +5,7 @@ if __name__ == "__main__":
     sys.exit()
 
 from fpdf import FPDF
-import datetime
+import datetime, os
 
 def create_pdf(date_range, record_total, starting_amount, cash_on_hand, comments, path):
     pdf_export = FPDF("P", "in", "Letter")
